@@ -5,17 +5,28 @@ def normalize_qualys_host(raw_host: Dict) -> Dict:
     return {
         "host_id": raw_host.get("_id"),
         "address": raw_host.get("address"),
-        "os": raw_host.get("os", "").split("Build")[0].strip(),  # Extract primary OS info
+        "os": raw_host.get("os", "").split("Build")[0].strip() if raw_host.get("os") else None,  # Handle missing `os`
         "last_seen": raw_host.get("agentInfo", {}).get("lastCheckedIn", {}).get("$date"),
         "cloud_provider": raw_host.get("cloudProvider"),
         "platform": raw_host.get("agentInfo", {}).get("platform"),
+        "dns_host_name": raw_host.get("dnsHostName"),  # Example additional field
+        "fqdn": raw_host.get("fqdn"),
+        "location": raw_host.get("agentInfo", {}).get("location"),
         "vulnerabilities": [
-            vuln["HostAssetVuln"]["qid"]
+            vuln.get("HostAssetVuln", {}).get("qid")
             for vuln in raw_host.get("vuln", {}).get("list", [])
         ],
         "tags": [
-            tag["TagSimple"]["name"]
+            tag.get("TagSimple", {}).get("name")
             for tag in raw_host.get("tags", {}).get("list", [])
+        ],
+        "open_ports": [
+            port.get("HostAssetOpenPort", {}).get("port")
+            for port in raw_host.get("openPort", {}).get("list", [])
+        ],
+        "software": [
+            software.get("HostAssetSoftware", {}).get("name")
+            for software in raw_host.get("software", {}).get("list", [])
         ],
     }
 
@@ -32,5 +43,4 @@ def normalize_crowdstrike_host(raw_host: Dict) -> Dict:
         "hostname": raw_host.get("hostname"),
         "policies": raw_host.get("policies", []),
         "tags": raw_host.get("tags", []),
-        "vulnerabilities": raw_host.get("vulnerabilities", []),  # If available
     }
