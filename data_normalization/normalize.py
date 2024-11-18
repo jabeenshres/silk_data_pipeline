@@ -1,15 +1,21 @@
 from typing import Dict
 
+
 def normalize_qualys_host(raw_host: Dict) -> Dict:
-    """Normalize a Qualys host to a unified format."""
+    """
+    Normalize Qualys host data to a unified format.
+
+    :param raw_host: Raw Qualys host data.
+    :return: Normalized host data as a dictionary.
+    """
     return {
         "host_id": raw_host.get("_id"),
         "address": raw_host.get("address"),
-        "os": raw_host.get("os", "").split("Build")[0].strip() if raw_host.get("os") else None,  # Handle missing `os`
+        "os": raw_host.get("os", "").split("Build")[0].strip() if raw_host.get("os") else None,
         "last_seen": raw_host.get("agentInfo", {}).get("lastCheckedIn", {}).get("$date"),
         "cloud_provider": raw_host.get("cloudProvider"),
         "platform": raw_host.get("agentInfo", {}).get("platform"),
-        "dns_host_name": raw_host.get("dnsHostName"),  # Example additional field
+        "dns_host_name": raw_host.get("dnsHostName"),
         "fqdn": raw_host.get("fqdn"),
         "location": raw_host.get("agentInfo", {}).get("location"),
         "vulnerabilities": [
@@ -30,8 +36,14 @@ def normalize_qualys_host(raw_host: Dict) -> Dict:
         ],
     }
 
+
 def normalize_crowdstrike_host(raw_host: Dict) -> Dict:
-    """Normalize a CrowdStrike host to a unified format."""
+    """
+    Normalize CrowdStrike host data to a unified format.
+
+    :param raw_host: Raw CrowdStrike host data.
+    :return: Normalized host data as a dictionary.
+    """
     return {
         "host_id": raw_host.get("device_id"),
         "address": raw_host.get("local_ip"),
