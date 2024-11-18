@@ -26,5 +26,5 @@ This project implements a data pipeline to:
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/silk_data_pipeline.git
+   git clone https://github.com/jabeenshres/silk_data_pipeline.git
    cd silk_data_pipeline
