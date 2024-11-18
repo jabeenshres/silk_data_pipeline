@@ -38,3 +38,19 @@ def plot_host_age(hosts, filename, title="Old vs. New Hosts"):
     plt.grid(axis="y", linestyle="--", alpha=0.7)
     plt.savefig(filename)
     plt.show()
+
+
+def plot_open_ports_distribution(hosts, filename="open_ports_distribution.png"):
+    port_counts = {}
+    for host in hosts:
+        for port in host.get("open_ports", []):
+            port_counts[port] = port_counts.get(port, 0) + 1
+
+    plt.bar(port_counts.keys(), port_counts.values(), color="#ff9999")
+    plt.xticks(rotation=45, ha="right")
+    plt.title("Distribution of Open Ports")
+    plt.xlabel("Port Number")
+    plt.ylabel("Count")
+    plt.tight_layout()
+    plt.savefig(filename)
+    plt.show()

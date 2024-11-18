@@ -5,7 +5,7 @@ from data_fetching.qualys_crowdstrike_client import BaseAPIClient
 # from data_fetching.crowdstrike_client import CrowdstrikeClient
 from data_normalization.normalize import normalize_qualys_host, normalize_crowdstrike_host
 from data_deduping.dedupe import deduplicate_hosts
-from visualizations.visualize import plot_os_distribution, plot_host_age
+from visualizations.visualize import plot_os_distribution, plot_host_age, plot_open_ports_distribution
 import os
 import sys
 from dotenv import load_dotenv
@@ -65,8 +65,12 @@ def main():
     qualys_hosts = [normalize_qualys_host(h) for h in qualys_hosts]
     crowd_hosts = [normalize_crowdstrike_host(h) for h in crowd_hosts]
     # Combine and Deduplicate
-    all_hosts = deduplicate_hosts(qualys_hosts + crowd_hosts)
 
+    all_hosts = deduplicate_hosts(qualys_hosts + crowd_hosts)
+    """
+    Displaying Normalized all hosts
+    """
+    print(all_hosts)
     # Save to MongoDB
     save_hosts_to_db(all_hosts)
 
@@ -74,6 +78,7 @@ def main():
     print("Generating visualizations for all hosts...")
     plot_os_distribution(qualys_hosts, "os_distribution.png", title="Distribution of Hosts by OS (All Sources)")
     plot_host_age(qualys_hosts, "host_age_bar.png", title="Old vs. New Hosts (All Sources)")
+    plot_open_ports_distribution(qualys_hosts, "open_ports_distribution.png")
 
     print("Generating visualizations for CrowdStrike hosts...")
     plot_os_distribution(crowd_hosts, "os_distribution_crowdstrike.png", title="Distribution of Hosts by OS (CrowdStrike)")
