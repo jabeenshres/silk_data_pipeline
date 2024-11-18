@@ -16,6 +16,8 @@ load_dotenv()
 TOKEN = os.getenv("TOKEN")
 QUALYS_API = os.getenv("QUALYS_API")
 CROWD_STRIKE_API = os.getenv("CROWD_STRIKE_API")
+MONGO_DB = os.getenv("MONGO_DB")
+
 
 if not TOKEN:
     raise EnvironmentError("API tokens are not set in the .env file.")
@@ -25,7 +27,7 @@ if not CROWD_STRIKE_API or not QUALYS_API:
     raise EnvironmentError("API end-points are not set in the .env file.")
 
 def get_mongo_collection():
-    client = MongoClient("mongodb://localhost:27017/")
+    client = MongoClient(MONGO_DB)
     db = client["silk_pipeline"]
     return db["hosts"]
 
