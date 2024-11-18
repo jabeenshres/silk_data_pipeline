@@ -23,26 +23,14 @@ class BaseAPIClient:
             response = requests.get(url, headers=headers, params=params)
         else:
             raise ValueError(f"Unsupported HTTP method: {method}")
-
         # Check for response status
         if response.status_code == 200:
             return response.json()
         else:
             response.raise_for_status()
 
-
-class QualysClient(BaseAPIClient):
-    """API client for Qualys."""
-    def fetch_hosts(self, skip: int = 5, limit: int = 5):
-        """Fetch hosts from Qualys API."""
+    def fetch_hosts(self, skip: int = 5, limit: int = 2):
+        """Fetch hosts from Qualys and CrowdStrike API."""
         params = {"skip": skip, "limit": limit}
         return self._make_request(params=params)
-
-
-class CrowdStrikeClient(BaseAPIClient):
-    """API client for CrowdStrike."""
-    def fetch_hosts(self, offset: int = 5, limit: int = 5):
-        """Fetch hosts from CrowdStrike API."""
-        params = {"offset": offset, "limit": limit}
-        return self._make_request(params=params)
-
+    
