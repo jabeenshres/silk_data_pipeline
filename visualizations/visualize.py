@@ -1,11 +1,20 @@
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta, timezone
 
+
 def plot_os_distribution(hosts, filename, title="Distribution of Hosts by OS"):
+    """
+    Plot the distribution of hosts by operating system.
+
+    :param hosts: List of hosts.
+    :param filename: Name of the output image file.
+    :param title: Title of the plot.
+    """
     os_counts = {}
     for host in hosts:
         os = host["os"]
         os_counts[os] = os_counts.get(os, 0) + 1
+
     plt.bar(os_counts.keys(), os_counts.values())
     plt.xticks(rotation=45, ha="right")
     plt.title(title)
@@ -15,20 +24,26 @@ def plot_os_distribution(hosts, filename, title="Distribution of Hosts by OS"):
     plt.savefig(filename)
     plt.show()
 
+
 def plot_host_age(hosts, filename, title="Old vs. New Hosts"):
+    """
+    Plot a comparison of old vs. new hosts based on `last_seen`.
+
+    :param hosts: List of hosts.
+    :param filename: Name of the output image file.
+    :param title: Title of the plot.
+    """
     old_hosts = 0
     new_hosts = 0
-    cutoff_date = datetime.now(timezone.utc) - timedelta(days=30)  # Aware datetime
+    cutoff_date = datetime.now(timezone.utc) - timedelta(days=30)
 
     for host in hosts:
-        # Convert last_seen to a timezone-aware datetime
         last_seen = datetime.fromisoformat(host["last_seen"].replace("Z", "+00:00"))
         if last_seen < cutoff_date:
             old_hosts += 1
         else:
             new_hosts += 1
 
-    # Create a bar chart
     labels = ["Old Hosts", "New Hosts"]
     counts = [old_hosts, new_hosts]
 
@@ -41,6 +56,12 @@ def plot_host_age(hosts, filename, title="Old vs. New Hosts"):
 
 
 def plot_open_ports_distribution(hosts, filename="open_ports_distribution.png"):
+    """
+    Plot the distribution of open ports across all hosts.
+
+    :param hosts: List of hosts.
+    :param filename: Name of the output image file.
+    """
     port_counts = {}
     for host in hosts:
         for port in host.get("open_ports", []):
