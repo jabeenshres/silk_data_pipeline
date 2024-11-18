@@ -1,0 +1,4 @@
+requests
+pymongo
+matplotlib
+python-dotenv
