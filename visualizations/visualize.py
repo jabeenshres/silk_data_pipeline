@@ -74,13 +74,31 @@ def plot_open_ports_distribution(hosts, filename="open_ports_distribution.png"):
         for port in host.get("open_ports", []):
             port_counts[port] = port_counts.get(port, 0) + 1
 
-    plt.bar(port_counts.keys(), port_counts.values(), color="#ff9999")
-    plt.xticks(rotation=45, ha="right")
-    plt.title("Distribution of Open Ports")
-    plt.xlabel("Port Number")
+    # Debugging: Print port_counts
+    print("Port Counts:", port_counts)
+
+    if not port_counts:
+        print("No open ports data available for visualization.")
+        return
+
+    # Optionally group ports into buckets for better visualization
+    bucket_size = 1000  # Group ports into buckets of 1000
+    buckets = {}
+    for port, count in port_counts.items():
+        bucket = (port // bucket_size) * bucket_size
+        buckets[bucket] = buckets.get(bucket, 0) + count
+
+    # Plot the buckets
+    plt.bar(buckets.keys(), buckets.values(), width=bucket_size, color="#ff9999", edgecolor="black")
+    plt.xticks(list(buckets.keys()), rotation=45, ha="right")
+    plt.title("Distribution of Open Ports (Grouped by 1000)")
+    plt.xlabel("Port Range")
     plt.ylabel("Count")
     plt.tight_layout()
-    full_path = os.path.join("images", filename)  # Save in 'images/' directory
+
+    # Save the plot
+    os.makedirs("images", exist_ok=True)  # Ensure directory exists
+    full_path = os.path.join("images", filename)
     plt.savefig(full_path)
-    plt.close()  # Close the plot to free memory
+    plt.close()
     print(f"Saved open ports distribution plot to {full_path}")
