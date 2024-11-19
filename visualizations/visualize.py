@@ -15,8 +15,8 @@ def plot_os_distribution(hosts, filename, title="Distribution of Hosts by OS"):
     """
     os_counts = {}
     for host in hosts:
-        os = host["os"]
-        os_counts[os] = os_counts.get(os, 0) + 1
+        os_name = host["os"]
+        os_counts[os_name] = os_counts.get(os_name, 0) + 1
 
     plt.bar(os_counts.keys(), os_counts.values())
     plt.xticks(rotation=45, ha="right")
