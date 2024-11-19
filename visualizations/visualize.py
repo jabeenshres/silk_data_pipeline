@@ -97,7 +97,6 @@ def plot_open_ports_distribution(hosts, filename="open_ports_distribution.png"):
     plt.tight_layout()
 
     # Save the plot
-    os.makedirs("images", exist_ok=True)  # Ensure directory exists
     full_path = os.path.join("images", filename)
     plt.savefig(full_path)
     plt.close()
