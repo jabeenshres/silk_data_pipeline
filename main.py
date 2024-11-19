@@ -5,7 +5,7 @@ from pymongo import MongoClient
 import requests
 
 # Custom modules
-from data_fetching.qualys_crowdstrike_client import BaseAPIClient
+from data_fetching.api_client import BaseAPIClient
 from data_normalization.normalize import normalize_qualys_host, normalize_crowdstrike_host
 from data_deduping.dedupe import deduplicate_hosts
 from visualizations.visualize import plot_os_distribution, plot_host_age, plot_open_ports_distribution
