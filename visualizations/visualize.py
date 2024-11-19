@@ -1,6 +1,9 @@
+import os
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta, timezone
 
+# Ensure the 'images/' directory exists
+os.makedirs("images", exist_ok=True)
 
 def plot_os_distribution(hosts, filename, title="Distribution of Hosts by OS"):
     """
@@ -21,8 +24,10 @@ def plot_os_distribution(hosts, filename, title="Distribution of Hosts by OS"):
     plt.xlabel("Operating System")
     plt.ylabel("Count")
     plt.tight_layout()
-    plt.savefig(filename)
-    plt.show()
+    full_path = os.path.join("images", filename)  # Save in 'images/' directory
+    plt.savefig(full_path)
+    plt.close()  # Close the plot to free memory
+    print(f"Saved OS distribution plot to {full_path}")
 
 
 def plot_host_age(hosts, filename, title="Old vs. New Hosts"):
@@ -51,8 +56,10 @@ def plot_host_age(hosts, filename, title="Old vs. New Hosts"):
     plt.title(title)
     plt.ylabel("Number of Hosts")
     plt.grid(axis="y", linestyle="--", alpha=0.7)
-    plt.savefig(filename)
-    plt.show()
+    full_path = os.path.join("images", filename)  # Save in 'images/' directory
+    plt.savefig(full_path)
+    plt.close()  # Close the plot to free memory
+    print(f"Saved host age plot to {full_path}")
 
 
 def plot_open_ports_distribution(hosts, filename="open_ports_distribution.png"):
@@ -73,5 +80,7 @@ def plot_open_ports_distribution(hosts, filename="open_ports_distribution.png"):
     plt.xlabel("Port Number")
     plt.ylabel("Count")
     plt.tight_layout()
-    plt.savefig(filename)
-    plt.show()
+    full_path = os.path.join("images", filename)  # Save in 'images/' directory
+    plt.savefig(full_path)
+    plt.close()  # Close the plot to free memory
+    print(f"Saved open ports distribution plot to {full_path}")

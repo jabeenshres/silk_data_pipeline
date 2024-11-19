@@ -135,16 +135,16 @@ def main():
     # Save the deduplicated data to MongoDB
     save_hosts_to_db(all_hosts)
 
-    # Generate visualizations
-   # Generate visualizations
-    print("Generating visualizations for all hosts...")
-    plot_os_distribution(qualys_hosts, "os_distribution.png", title="Distribution of Hosts by OS (All Sources)")
-    plot_host_age(qualys_hosts, "host_age_bar.png", title="Old vs. New Hosts (All Sources)")
-    plot_open_ports_distribution(qualys_hosts, "open_ports_distribution.png")
+    # Fetch all combined hosts from MongoDB
+    print("Fetching combined data from MongoDB for visualizations...")
+    combined_hosts = list(get_mongo_collection().find({}))
 
-    print("Generating visualizations for CrowdStrike hosts...")
-    plot_os_distribution(crowd_hosts, "os_distribution_crowdstrike.png", title="Distribution of Hosts by OS (CrowdStrike)")
-    plot_host_age(crowd_hosts, "host_age_bar_crowdstrike.png", title="Old vs. New Hosts (CrowdStrike)")
+    # Generate visualizations for combined data
+    print("Generating visualizations for combined data...")
+    plot_os_distribution(combined_hosts, "os_distribution_combined.png", title="Distribution of Hosts by OS (Combined)")
+    plot_host_age(combined_hosts, "host_age_combined.png", title="Old vs. New Hosts (Combined)")
+    plot_open_ports_distribution(combined_hosts, "open_ports_distribution_combined.png")
+
     print("Pipeline execution completed successfully!")
 
 
