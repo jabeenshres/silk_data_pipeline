@@ -36,29 +36,18 @@ def get_user_input():
     - limit: Must be either 1 or 2.
     :return: Tuple of (skip, limit).
     """
-    print("Provide API parameters for fetching data:")
-    
-    # Get valid input for `skip`
-    while True:
-        try:
-            skip = int(input("Enter skip (0-5): "))
-            if 0 <= skip <= 5:
-                break
-            else:
-                print("Invalid value. Skip must be between 0 and 5.")
-        except ValueError:
-            print("Please enter a valid integer for skip.")
+    def validate_input(prompt, valid_range):
+        while True:
+            try:
+                value = int(input(prompt))
+                if value in valid_range:
+                    return value
+                print(f"Invalid value. Please choose from {valid_range}.")
+            except ValueError:
+                print("Please enter a valid integer.")
 
-    # Get valid input for `limit`
-    while True:
-        try:
-            limit = int(input("Enter limit (1 or 2): "))
-            if 1 <= limit <= 2:
-                break
-            else:
-                print("Invalid value. Limit must be either 1 or 2.")
-        except ValueError:
-            print("Please enter a valid integer for limit.")
+    skip = validate_input("Enter skip (0-5): ", range(6))  # Valid values: 0-5
+    limit = validate_input("Enter limit (1 or 2): ", [1, 2])  # Valid values: 1 or 2
 
     return skip, limit
 
